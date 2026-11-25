@@ -1,0 +1,39 @@
+name: Passaggio a Cloudflare
+
+# Ogni 5 minuti controlla se i circoli in attesa (passaggi_cloudflare.json) rispondono
+# dal nuovo indirizzo Cloudflare; se si', aggiorna circoli.json e lo pubblica.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: passaggio-cloudflare
+  cancel-in-progress: false
+
+jobs:
+  controlla:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controlla i nuovi indirizzi
+        id: controllo
+        run: |
+          if python3 strumenti/passaggio_cloudflare.py; then
+            echo "cambiato=si" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Pubblica l'elenco aggiornato
+        if: steps.controllo.outputs.cambiato == 'si'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "passaggio-cloudflare"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add circoli.json passaggi_cloudflare.json
+          git commit -m "Passaggio a Cloudflare: indirizzo nuovo nell'elenco circoli"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

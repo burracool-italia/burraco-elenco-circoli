@@ -4,11 +4,20 @@
     "url": "https://principale.burracool.cc"
   },
   {
-    "nome": "Billions Roma - Settebagni",
-    "url": "https://billions.burracool.cc"
+    "nome": "Happy-Atamai",
+    "url": "https://billions.burracool.cc",
+    "nomi_precedenti": [
+      "Billions Roma - Settebagni"
+    ],
+    "url_precedenti": [
+      "https://mullets-applied-wharf.ngrok-free.dev"
+    ]
   },
   {
     "nome": "PC di test",
-    "url": "https://secondario.burracool.cc"
+    "url": "https://secondario.burracool.cc",
+    "url_precedenti": [
+      "https://procreate-each-removing.ngrok-free.dev"
+    ]
   }
 ]

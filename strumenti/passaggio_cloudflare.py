@@ -51,6 +51,9 @@ def main() -> int:
         print(f"{nome}: provo {nuovo}")
         if risponde(nuovo):
             print(f"  {nome}: risponde -> {circolo.get('url')} diventa {nuovo}")
+            vecchi = circolo.setdefault("url_precedenti", [])
+            if circolo.get("url") and circolo["url"] not in vecchi:
+                vecchi.append(circolo["url"])   # l'app riconosce il circolo salvato anche da qui
             circolo["url"] = nuovo
             del attesa[nome]
             cambiato = True
